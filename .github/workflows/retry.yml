@@ -28,5 +28,5 @@ jobs:
   #   steps:
   #     - name: Step that fails randomly
   #       run: |
-  #         curl -X POST /projects/:id/jobs/:job_id/retry
+  #         curl -X POST /projects/:id/jobs/:job_id/retry 
   

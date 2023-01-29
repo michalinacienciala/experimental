@@ -36,7 +36,7 @@ jobs:
       #       https://api.github.com/repos/michalinacienciala/experimental/actions/jobs/6940518059/rerun
       - name: Rerun job
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.RERUN_TOKEN }}
         run: |
           gh api \
             --method POST \

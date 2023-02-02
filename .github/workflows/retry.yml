@@ -30,11 +30,15 @@ jobs:
     if: ${{ failure() }} # exeutes job if ancestor job have failed
     needs: randomly-failing-job
     steps:
+      # - name: Extract workflow id from job URL
+      #   id: get-workflow-id
+      #   run: |
+      #     echo ${{needs.randomly-failing-job.outputs.job_id_url}} | sed -n "s/^.*\/\([0-9]*\)\/.*$/\1/p"
+      #     echo "workflow_id=$(!!)"  >> $GITHUB_OUTPUT
       - name: Extract workflow id from job URL
         id: get-workflow-id
         run: |
-          echo ${{needs.randomly-failing-job.outputs.job_id_url}} | sed -n "s/^.*\/\([0-9]*\)\/.*$/\1/p"
-          echo "workflow_id=$(!!)"  >> $GITHUB_OUTPUT
+          echo workflow_id = ${{needs.randomly-failing-job.outputs.job_id_url}} | sed -n "s/^.*\/\([0-9]*\)\/.*$/\1/p" >> $GITHUB_OUTPUT
 
       - name: Rerun failing jobs in workflow
         continue-on-error: true

@@ -16,15 +16,6 @@ jobs:
     name: Rerun ${{ github.event.inputs.runId }}
     runs-on: ubuntu-latest
     steps:
-      # Upgrade gh cli to use the --failed parameter (added in version 2.6.0 (2022-03-15))
-      # - name: Upgrade gh cli to latest stable
-      #   shell: pwsh
-      #   run: |
-      #     gh --version
-      #     brew update
-      #     brew doctor
-      #     brew install gh
-      #     gh --version
       - name: "Rerun ${{ github.event.inputs.runId }}"
         shell: pwsh
         env:

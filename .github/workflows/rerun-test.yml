@@ -3,12 +3,12 @@ name: Test retry
 on:
   push:
   workflow_dispatch:
-    # inputs:
-    #   maxAttempts:
-    #     description: "How many times to rerun the workflow in case of a failure"
-    #     required: true
-    #     type: string
-    #     default: "3"
+    inputs:
+      maxAttempts:
+        description: "How many times to rerun the workflow in case of a failure"
+        required: true
+        type: string
+        default: "3"
 
 env:
   # You can hardcode this instead of passing it in from inputs
@@ -49,33 +49,33 @@ jobs:
         run: |
           exit 1
 
-  # trigger_rerun:
-  #   name: Trigger rerun of ${{ github.run_id }}
-  #   if: failure() && ( needs.randomly-failing-job.outputs.nextAttempt <= needs.randomly-failing-job.outputs.maxAttempts ) # exeutes job if ancestor job have failed and maxAttempts has not been exceeded
-  #   needs: randomly-failing-job
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     attempt: ${{ needs.randomly-failing-job.outputs.nextAttempt }}
-  #   steps:
-  #     - name: echo
-  #       run: echo ${{ needs.randomly-failing-job.outputs.nextAttempt }} ${{ needs.randomly-failing-job.outputs.maxAttempts }}
-  #     - name: "Trigger attempt ${{ needs.randomly-failing-job.outputs.nextAttempt }} of 'Test retry' workflow"
-  #       shell: pwsh
-  #       env:
-  #         # GITHUB_TOKEN with actions: write will NOT work
-  #         # PAT Token must have workflow scope
-  #         GH_CLI_TOKEN: ${{ secrets.RERUN_TOKEN_CLASSIC }}
-  #       run: |
-  #         echo "Running gh auth login..."
-  #         $env:GH_CLI_TOKEN | gh auth login --with-token
-  #         if(!$?) { exit 1 }
-  #         echo "Triggering attempt ${{ needs.randomly-failing-job.outputs.nextAttempt }} of 'Test retry' workflow"
-  #         echo "
-  #         gh workflow run rerun.yml
-  #           --raw-field runId=$env:GITHUB_RUN_ID
-  #           --repo $env:GITHUB_REPOSITORY
-  #         "
-  #         gh workflow run rerun.yml `
-  #           --raw-field runId=$env:GITHUB_RUN_ID `
-  #           --repo $env:GITHUB_REPOSITORY
-  #         if(!$?) { exit 1 }
+  trigger_rerun:
+    name: Trigger rerun of ${{ github.run_id }}
+    if: failure() && ( needs.randomly-failing-job.outputs.nextAttempt <= needs.randomly-failing-job.outputs.maxAttempts ) # exeutes job if ancestor job have failed and maxAttempts has not been exceeded
+    needs: randomly-failing-job
+    runs-on: ubuntu-latest
+    env:
+      attempt: ${{ needs.randomly-failing-job.outputs.nextAttempt }}
+    steps:
+      - name: echo
+        run: echo ${{ needs.randomly-failing-job.outputs.nextAttempt }} ${{ needs.randomly-failing-job.outputs.maxAttempts }}
+      - name: "Trigger attempt ${{ needs.randomly-failing-job.outputs.nextAttempt }} of 'Test retry' workflow"
+        shell: pwsh
+        env:
+          # GITHUB_TOKEN with actions: write will NOT work
+          # PAT Token must have workflow scope
+          GH_CLI_TOKEN: ${{ secrets.RERUN_TOKEN_CLASSIC }}
+        run: |
+          echo "Running gh auth login..."
+          $env:GH_CLI_TOKEN | gh auth login --with-token
+          if(!$?) { exit 1 }
+          echo "Triggering attempt ${{ needs.randomly-failing-job.outputs.nextAttempt }} of 'Test retry' workflow"
+          echo "
+          gh workflow run rerun.yml
+            --raw-field runId=$env:GITHUB_RUN_ID
+            --repo $env:GITHUB_REPOSITORY
+          "
+          gh workflow run rerun.yml `
+            --raw-field runId=$env:GITHUB_RUN_ID `
+            --repo $env:GITHUB_REPOSITORY
+          if(!$?) { exit 1 }

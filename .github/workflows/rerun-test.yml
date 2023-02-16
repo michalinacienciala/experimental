@@ -36,8 +36,8 @@ jobs:
           $nextAttempt = $attempt + 1
           echo "nextAttempt=$nextAttempt"
           echo "maxAttempts=$maxAttempts"
-          echo "nextAttempt=$nextAttempt" >> $GITHUB_OUTPUT
-          echo "maxAttempts=$maxAttempts" >> $GITHUB_OUTPUT
+          echo "nextAttempt=$nextAttempt" >> $env:GITHUB_OUTPUT
+          echo "maxAttempts=$maxAttempts" >> $env:GITHUB_OUTPUT
       - name: echo
         run: echo ${{ steps.set_output_variables.outputs.nextAttempt }} ${{ steps.set_output_variables.outputs.maxAttempts }}
       - name: echo

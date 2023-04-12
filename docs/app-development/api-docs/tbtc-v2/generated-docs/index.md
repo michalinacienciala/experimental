@@ -1,8 +1,49 @@
 # Solidity API
+## Table Of Contens
+
+<!-- toc -->
+
+- [Bank](#bank)
+- [IReceiveBalanceApproval](#ireceivebalanceapproval)
+- [BitcoinTx](#bitcointx)
+- [Bridge](#bridge)
+- [BridgeGovernance](#bridgegovernance)
+- [BridgeGovernanceParameters](#bridgegovernanceparameters)
+- [BridgeState](#bridgestate)
+- [Deposit](#deposit)
+- [DepositSweep](#depositsweep)
+- [EcdsaLib](#ecdsalib)
+- [Fraud](#fraud)
+- [Heartbeat](#heartbeat)
+- [IRelay](#irelay)
+- [MovingFunds](#movingfunds)
+- [OutboundTx](#outboundtx)
+- [Redemption](#redemption)
+- [Wallets](#wallets)
+- [IVault](#ivault)
+- [GovernanceUtils](#governanceutils)
+- [VendingMachine](#vendingmachine)
+- [VendingMachineV2](#vendingmachinev2)
+- [VendingMachineV3](#vendingmachinev3)
+- [WalletCoordinator](#walletcoordinator)
+- [L2TBTC](#l2tbtc)
+- [IWormholeTokenBridge](#iwormholetokenbridge)
+- [L2WormholeGateway](#l2wormholegateway)
+- [MaintainerProxy](#maintainerproxy)
+- [Epoch](#epoch)
+- [ILightRelay](#ilightrelay)
+- [RelayUtils](#relayutils)
+- [LightRelay](#lightrelay)
+- [TBTC](#tbtc)
+- [DonationVault](#donationvault)
+- [TBTCOptimisticMinting](#tbtcoptimisticminting)
+- [TBTCVault](#tbtcvault)
+
+<!-- tocstop -->
 
 ## Bank
 
-TEST is a central component tracking Bitcoin balances. Balances can
+Bank is a central component tracking Bitcoin balances. Balances can
 be transferred between balance owners, and balance owners can
 approve their balances to be spent by others. Balances in the Bank
 are updated for depositors who deposited their Bitcoin into the
@@ -8750,7 +8791,7 @@ See `submitDepositSweepProposal` function documentation.
 ### validateDepositSweepProposal
 
 ```solidity
-function validateDepositSweepProposal(struct WalletCoordinator.DepositSweepProposal proposal, struct WalletCoordinator.DepositExtraInfo[] depositsExtraInfo) external view
+function validateDepositSweepProposal(struct WalletCoordinator.DepositSweepProposal proposal, struct WalletCoordinator.DepositExtraInfo[] depositsExtraInfo) external view returns (bool)
 ```
 
 View function encapsulating the main rules of a valid deposit
@@ -8795,6 +8836,12 @@ The following off-chain validation must be performed as a bare minimum:
 | ---- | ---- | ----------- |
 | proposal | struct WalletCoordinator.DepositSweepProposal | The sweeping proposal to validate. |
 | depositsExtraInfo | struct WalletCoordinator.DepositExtraInfo[] | Deposits extra data required to perform the validation. |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | bool | True if the proposal is valid. Reverts otherwise. |
 
 ### validateSweepTxFee
 

@@ -2,7 +2,7 @@
 
 ## Bank
 
-Bank is a central component tracking Bitcoin balances. Balances can
+TEST is a central component tracking Bitcoin balances. Balances can
 be transferred between balance owners, and balance owners can
 approve their balances to be spent by others. Balances in the Bank
 are updated for depositors who deposited their Bitcoin into the

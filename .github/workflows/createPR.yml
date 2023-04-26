@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Create a pull request
         env:
@@ -17,9 +19,9 @@ jobs:
           git config --global user.email "michalina.cienciala@akena.co"
           git config --global user.name "Michalina Cienciala"
           echo "Checkout"
-          git checkout auto-update-api-docs || git checkout -b auto-update-api-docs
-          echo "Pull"
-          git pull
+          git checkout auto-update-api-docs-3 || git checkout -b auto-update-api-docs-3
+          # echo "Pull"
+          # git pull
           echo "Edit"
           date > newfile.txt
           echo "Add"                                                
@@ -27,6 +29,6 @@ jobs:
           echo "Commit"
           git commit -m "Update docs"
           echo "Push"
-          git push --set-upstream origin HEAD:auto-update-api-docs
+          git push --set-upstream origin HEAD:auto-update-api-docs-3
           echo "PR"
           hub pull-request -m "Update Solidity API docs" # --reviewer [...] --labels [...]

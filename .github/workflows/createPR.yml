@@ -2,24 +2,31 @@ name: Create PR
 
 on:
   workflow_dispatch:
+    # inputs: 
+    #   branch: 
 
 jobs:
   create-PR:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Create a pull request
+        # shell: bash {0}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUCC_COMMAND: "1"
         run: |
-          echo "Configure"
+          echo "• Configure"
           git config --global user.email "michalina.cienciala@akena.co"
           git config --global user.name "Michalina Cienciala"
+          branch=auto-create-solidity-api-docs-1
           echo "Checkout"
-          git checkout auto-update-api-docs || git checkout -b auto-update-api-docs
-          echo "Pull"
-          git pull
+          git checkout $branch || git checkout -b $branch
+          # echo "Pull"
+          # git pull
           echo "Edit"
           date > newfile.txt
           echo "Add"                                                
@@ -27,6 +34,97 @@ jobs:
           echo "Commit"
           git commit -m "Update docs"
           echo "Push"
-          git push --set-upstream origin HEAD:auto-update-api-docs
-          echo "PR"
-          hub pull-request -m "Update Solidity API docs" # --reviewer [...] --labels [...]
+          git push --set-upstream origin HEAD:$branch
+          echo "PR 1"
+          # set -x
+          # pr_command=$(hub pull-request --base main --message "Update Solidity API docs" --message "Docs updated by workflow:" 2>&1)
+          # echo "PR 2"
+          # if [ $? -eq 0 ] || [[ "$pr_command" == *"A pull request already exists"* ]];
+          # then
+          #   echo "PR created (or it already existed)"
+          # else
+          #   echo "PR creation command failed"
+          #   exit 1
+          # fi
+
+          # if hub pull-request --base main --message "Update Solidity API docs" --message "Docs updated by workflow:" | grep -q "A pull request already exists"
+          # then
+          #   echo "A pull request already exists"
+          # else
+          #   echo "Pull request created"
+          # fi
+
+          # results in `curl: (3) URL using bad/illegal format or missing URL`:
+          # echo "pr=$(curl -L \
+          #   -H \"Accept: application/vnd.github+json\" \
+          #   -H \"Authorization: Bearer ${{ env.GITHUB_TOKEN }}\" \
+          #   -H \"X-GitHub-Api-Version: 2022-11-28\" \
+          #   \"https://api.github.com/repos/michalinacienciala/experimental/pulls?head=auto-update-api-docs-4\")"
+
+          # prints `pr=` and a valid curl command
+          # echo "pr=curl -L \
+          #   -H \"Accept: application/vnd.github+json\" \
+          #   -H \"Authorization: Bearer ${{ env.GITHUB_TOKEN }}\" \
+          #   -H \"X-GitHub-Api-Version: 2022-11-28\" \
+          #   \"https://api.github.com/repos/michalinacienciala/experimental/pulls?head=auto-update-api-docs-4\""
+
+          # this should return just one PR if it exists. If not, then empty brackets (`[ empty line ]`)
+          # curl -L \
+          #   -H "Accept: application/vnd.github+json" \
+          #   -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+          #   -H "X-GitHub-Api-Version: 2022-11-28" \
+          #   "https://api.github.com/repos/michalinacienciala/experimental/pulls?head=michalinacienciala:auto-update-api-docs-4"
+
+          # this prints one line long string with PR info
+          # pr4=$(curl -L \
+          #   -H "Accept: application/vnd.github+json" \
+          #   -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+          #   -H "X-GitHub-Api-Version: 2022-11-28" \
+          #   "https://api.github.com/repos/michalinacienciala/experimental/pulls?head=michalinacienciala:auto-update-api-docs-4")
+          # echo "DEBUG"
+          # echo $pr4
+          
+          echo "Checking if PR for the destination branch already exists"
+            pr=$(curl -L \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/michalinacienciala/experimental/pulls?head=michalinacienciala:$branch")
+
+          if [[ $pr == $'[\n\n]' ]]; then
+            echo "Cheked. PR for branch $branch will be created"
+            hub pull-request --base main --message "Update Solidity API docs" --message "Docs updated by workflow:"
+          else
+            echo "Cheked. PR on branch $branch already exists"
+          fi
+
+
+          # if [[ -n ${{ env.pr }} ]]
+          # then
+          #   echo "Cheked. PR already exists"
+          # else
+          #   echo "Cheked. PR will be created"
+          # fi
+          
+          # echo "GREP nothing"
+          # git status | grep "nothing"
+          # echo $?
+
+          # echo "GREP nothingx"
+          # git status | grep "nothingx"
+          # echo $?
+
+          # echo "GREP PR exists (echo)"
+          # echo "Error creating pull request: Unprocessable Entity (HTTP 422)\nA pull request already exists for michalinacienciala:auto-update-api-docs-4." | grep "exists"
+          # echo $?
+
+          # echo "GREP exists (hub)"
+          # hub pull-request --base main --message "Update Solidity API docs" --message "Docs updated by workflow:" | grep "exists"
+          # echo $?
+
+          # echo "GREP exists (echo hub)"
+          # echo $(hub pull-request --base main --message "Update Solidity API docs" --message "Docs updated by workflow:") | grep "exists"
+          # echo $?
+
+          # echo "The end"
+

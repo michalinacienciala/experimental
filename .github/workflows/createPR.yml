@@ -8,18 +8,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Create a pull request
+        shell: bash {0}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUCC_COMMAND: "1"
         run: |
           echo "Configure"
           git config --global user.email "michalina.cienciala@akena.co"
           git config --global user.name "Michalina Cienciala"
           echo "Checkout"
-          git checkout auto-update-api-docs || git checkout -b auto-update-api-docs
-          echo "Pull"
-          git pull
+          git checkout auto-update-api-docs-4 || git checkout -b auto-update-api-docs-4
+          # echo "Pull"
+          # git pull
           echo "Edit"
           date > newfile.txt
           echo "Add"                                                
@@ -27,6 +31,29 @@ jobs:
           echo "Commit"
           git commit -m "Update docs"
           echo "Push"
-          git push --set-upstream origin HEAD:auto-update-api-docs
-          echo "PR"
-          hub pull-request -m "Update Solidity API docs" # --reviewer [...] --labels [...]
+          git push --set-upstream origin HEAD:auto-update-api-docs-4
+          echo "PR 1"
+          # set -x
+          # pr_command=$(hub pull-request --base main --message "Update Solidity API docs" --message "Docs updated by workflow:" 2>&1)
+          # echo "PR 2"
+          # if [ $? -eq 0 ] || [[ "$pr_command" == *"A pull request already exists"* ]];
+          # then
+          #   echo "PR created (or it already existed)"
+          # else
+          #   echo "PR creation command failed"
+          #   exit 1
+          # fi
+
+          # if hub pull-request --base main --message "Update Solidity API docs" --message "Docs updated by workflow:" | grep -q "A pull request already exists"
+          # then
+          #   echo "A pull request already exists"
+          # else
+          #   echo "Pull request created"
+          # fi
+
+          if ./script.sh | grep -q "A pull request already exists"
+          then
+            echo "A pull request already exists"
+          else
+            echo "Pull request created"
+          fi

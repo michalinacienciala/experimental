@@ -1,0 +1,32 @@
+name: Create PR
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-PR:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create a pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Configure"
+          git config --global user.email "michalina.cienciala@akena.co"
+          git config --global user.name "Michalina Cienciala"
+          echo "Checkout"
+          git checkout auto-update-api-docs || git checkout -b auto-update-api-docs
+          echo "Pull"
+          git pull
+          echo "Edit"
+          date > newfile.txt
+          echo "Add"                                                
+          git add -A
+          echo "Commit"
+          git commit -m "Update docs"
+          echo "Push"
+          git push --set-upstream origin HEAD:auto-update-api-docs
+          echo "PR"
+          hub pull-request -m "Update Solidity API docs" # --reviewer [...] --labels [...]

@@ -1,1 +1,1 @@
-{% include "git+https://michalinacienciala/experimental.git/docs/main-page/quickstart.md" %}
+{% include "https://github.com/threshold-network/components.git/README.md" %}

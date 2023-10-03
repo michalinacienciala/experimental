@@ -1,2 +1,6 @@
-# Page
+---
+description: This is a main page
+---
+
+# Main Page
 

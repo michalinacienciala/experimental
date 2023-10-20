@@ -25,4 +25,4 @@ jobs:
           git log -n 5 --oneline > commit_history_fork.txt
           cat commit_history_fork.txt
           git merge origin/stage-live
-          git push orgin stage-fork
+          git push origin stage-fork

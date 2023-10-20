@@ -17,6 +17,5 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           git checkout stage-fork
-          git fetch origin stage-live:stage-live
-          git merge stage-live --no-ff
-          git push origin stage-fork
+          git merge origin/stage-live
+          git push orgin stage-fork

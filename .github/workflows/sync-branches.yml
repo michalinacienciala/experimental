@@ -16,6 +16,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
+          git checkout stage-live
+          git pull
           git checkout stage-fork
           git merge origin/stage-live
           git push

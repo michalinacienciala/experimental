@@ -1,10 +1,8 @@
 name: Update staging and production environments
-
 on:
   push:
     branches:
       - stage-live
-
 jobs:
   sync-stage-live-to-stage-fork:
     if: github.ref == 'refs/heads/stage-live'
@@ -16,8 +14,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          git pull --all
+          git log -n 5 --oneline > commit_history.txt
+          cat commit_history.txt
+          git checkout stage-live
+          git log -n 5 --oneline > commit_history_live.txt
+          cat commit_history_live.txt
           git checkout stage-fork
+          git log -n 5 --oneline > commit_history_fork.txt
+          cat commit_history_fork.txt
           git merge origin/stage-live
-          git push origin stage-fork
-  
+          git push orgin stage-fork

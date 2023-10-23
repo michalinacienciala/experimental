@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - stage-live
+  workflow_dispatch:
 
 jobs:
     sync-main-to-stage-live:
-        if: github.ref == 'refs/heads/main'
         runs-on: ubuntu-latest
         steps:
           - name: Checkout

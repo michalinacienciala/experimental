@@ -25,6 +25,7 @@ jobs:
                 The environments that will be updated:
                 * Stage live: https://stage-live--taho-development.netlify.app/
                 * Stage fork: https://stage-fork--taho-development.netlify.app/
+
                 Read more: [Deployment to Production Flow](./docs/README.md)
               LABELS: '["deployment2"]'
           - uses: studroid/label-pr-or-issue-action@v1

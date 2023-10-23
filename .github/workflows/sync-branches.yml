@@ -1,28 +1,23 @@
 name: Update staging and production environments
+
 on:
   push:
     branches:
       - stage-live
+
 jobs:
-  sync-stage-live-to-stage-fork:
-    if: github.ref == 'refs/heads/stage-live'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: '0'
-      - name: Sync `stage-fork` with `stage-live`
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          git log -n 5 --oneline > commit_history.txt
-          cat commit_history.txt
-          git checkout stage-live
-          git log -n 5 --oneline > commit_history_live.txt
-          cat commit_history_live.txt
-          git checkout stage-fork
-          git log -n 5 --oneline > commit_history_fork.txt
-          cat commit_history_fork.txt
-          git merge origin/stage-live
-          git push origin stage-fork
+    sync-main-to-stage-live:
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v3
+          - name: Open/update a PR from `main` to `stage-live`
+            uses: tretuna/sync-branches@3428e61731dfc1b0c92e574a89f612c37340cad9
+            with:
+              GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+              FROM_BRANCH: "main"
+              TO_BRANCH: "stage-live"
+              PULL_REQUEST_TITLE: "🪄 [QA] Update stage environments"
+              PULL_REQUEST_BODY: "This is a pull request that upon merging will update stage environments with recent `main` changes."
+              LABELS: '["⚙️ deployment"]'

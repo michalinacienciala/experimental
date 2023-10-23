@@ -20,4 +20,4 @@ jobs:
               TO_BRANCH: "stage-live"
               PULL_REQUEST_TITLE: "🪄 [QA] Update stage environments"
               PULL_REQUEST_BODY: "This is a pull request that upon merging will update stage environments with recent `main` changes."
-              LABELS: '["⚙️ deployment"]'
+              LABELS: '["deployment2"]'

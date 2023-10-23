@@ -25,4 +25,4 @@ jobs:
           - uses: studroid/label-pr-or-issue-action@v1
             with:
               pr-or-issue-number: ${{ steps.pull.outputs.PULL_REQUEST_NUMBER }}
-              label: "development2"
+              label: "⚙️ deployment"

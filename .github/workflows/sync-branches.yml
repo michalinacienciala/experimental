@@ -20,13 +20,10 @@ jobs:
               FROM_BRANCH: "main"
               TO_BRANCH: "stage-live"
               PULL_REQUEST_TITLE: "🪄 [QA] Update stage environments"
-              PULL_REQUEST_BODY: >
+              PULL_REQUEST_BODY: |
                 This is a pull request that upon merging will update stage environments with recent `main` changes.
-                
                 The environments that will be updated:
-                
                 * Stage live: https://stage-live--taho-development.netlify.app/
-                
                 * Stage fork: https://stage-fork--taho-development.netlify.app/
               LABELS: '["deployment2"]'
           - uses: studroid/label-pr-or-issue-action@v1
